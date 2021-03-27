@@ -11,7 +11,7 @@ int main()
 	sf::RenderWindow window( sf::VideoMode( win_width, win_height ), "Particles demo" );
 	window.setVerticalSyncEnabled( true );
 
-	Particles part( window );
+	ParticleCluster part( window );
 
 	sf::Event event {};
 	// main loop
