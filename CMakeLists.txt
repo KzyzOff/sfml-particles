@@ -17,6 +17,8 @@ endif (WIN32)
 
 find_package(SFML 2 COMPONENTS window system graphics REQUIRED)
 
-add_executable(sfml_particles main.cpp)
+add_executable(sfml_particles
+        main.cpp
+        Particles.h Particles.cpp)
 
 target_link_libraries(sfml_particles sfml-graphics sfml-audio)

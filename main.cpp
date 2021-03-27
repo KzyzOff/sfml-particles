@@ -2,6 +2,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
+#include "Particles.h"
+
 int main()
 {
 	// creating window
@@ -9,14 +11,16 @@ int main()
 	sf::RenderWindow window( sf::VideoMode( win_width, win_height ), "Particles demo" );
 	window.setVerticalSyncEnabled( true );
 
+	Particles part( window );
+
 	sf::Event event {};
 	// main loop
-	while (window.isOpen())
+	while ( window.isOpen() )
 	{
 		// event loop
 		while ( window.pollEvent(event) )
 		{
-			if (event.type == sf::Event::Closed)
+			if ( event.type == sf::Event::Closed )
 				window.close();
 		}
 
