@@ -11,7 +11,10 @@ int main()
 	sf::RenderWindow window( sf::VideoMode( win_width, win_height ), "Particles demo" );
 	window.setVerticalSyncEnabled( true );
 
-	ParticleCluster part( window );
+	Particle part( window, 20.f, 10.f );
+	part.setRadius( 10.f );
+	part.setColor( sf::Color::Red );
+	part.setPosition( {300.f, 300.f} );
 
 	sf::Event event {};
 	// main loop
@@ -26,7 +29,7 @@ int main()
 
 		// rendering stuff
 		window.clear( sf::Color::Black );
-		// window.draw();
+		window.draw( part );
 		window.display();
 	}
 

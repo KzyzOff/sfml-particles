@@ -17,6 +17,8 @@ endif (WIN32)
 
 find_package(SFML 2 COMPONENTS window system graphics REQUIRED)
 
+include_directories(part)
+
 add_executable(sfml_particles
         main.cpp
         Particles.h Particles.cpp)
