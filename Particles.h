@@ -8,29 +8,32 @@
 #include <vector>
 #include <cmath>
 
-enum States { NOT_ACTIVE, TRIGGERED, CLEARING };
+enum class States { NOT_ACTIVE, TRIGGERED, CLEARING };
 
 class Particle : public sf::Drawable
 {
 private:
     sf::RenderWindow &window;
 	sf::CircleShape shape;
-	sf::Vector2f direction;
+	sf::Vector2f velocity;
 	float speed;
 	float angle;
 
 public:
-	Particle( sf::RenderWindow &win, float speed, float angle );
+	Particle( sf::RenderWindow &win, float speed, float angle_in_rad );
 
 	void update( float elapsed_time );
 	void draw( sf::RenderTarget &target, sf::RenderStates states ) const override;
+    void updateVelocity();
+    void updatePosition( float elapsed_time );
+
     void setAngle( float d_angle );
     void setColor( sf::Color color );
     void setRadius( float radius );
     void setPosition( sf::Vector2f pos );
 
 	sf::Vector2f getPosition() const;
-	sf::Vector2f getDirection() const;
+	sf::Vector2f getVelocity() const;
 	float getSpeed() const;
 	float getAngle() const;
 	float getRadius() const;

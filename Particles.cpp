@@ -28,13 +28,38 @@ void ParticleCluster::draw(sf::RenderTarget &target, sf::RenderStates states ) c
 
 // Particle implementation
 
-Particle::Particle( sf::RenderWindow &win, float speed, float angle )
+Particle::Particle( sf::RenderWindow &win, float speed, float angle_in_rad )
         : window(win),
         speed(speed),
-        angle(angle)
+        angle(angle_in_rad)
 {
-    direction.x = cos( (double)angle );
-    direction.y = sin( (double)angle );
+    updateVelocity();
+}
+
+void Particle::update( float elapsed_time )
+{
+    shape.setPosition( {elapsed_time * velocity.x, elapsed_time * velocity.y} );
+}
+
+void Particle::draw( sf::RenderTarget &target, sf::RenderStates states ) const
+{
+    target.draw( shape );
+}
+
+void Particle::updateVelocity()
+{
+    // calculate X and Y values of direction vector
+    float dir_x = cosf( angle ) * speed;
+    float dir_y = -sinf( angle ) * speed;
+    // round values to 0 when less than 0.00001f
+    velocity.x = ( fabsf(dir_x) > 0.00001f ) ? dir_x : 0.f;
+    velocity.y = ( fabsf(dir_y) > 0.00001f ) ? dir_y : 0.f;
+}
+
+void Particle::updatePosition( float elapsed_time )
+{
+    shape.setPosition( {shape.getPosition().x + velocity.x * elapsed_time,
+                        shape.getPosition().y + velocity.y * elapsed_time} );
 }
 
 void Particle::setAngle( float d_angle )
@@ -57,24 +82,13 @@ void Particle::setPosition( sf::Vector2f pos )
     shape.setPosition( pos );
 }
 
-void Particle::update( float elapsed_time )
-{
-    shape.setPosition( {elapsed_time * direction.x, elapsed_time * direction.y} );
-}
-
-void Particle::draw( sf::RenderTarget &target, sf::RenderStates states ) const
-{
-    target.draw( shape );
-}
-
 sf::Vector2f Particle::getPosition() const
 {
     return shape.getPosition();
 }
 
-sf::Vector2f Particle::getDirection() const
-{
-    return direction;
+sf::Vector2f Particle::getVelocity() const {
+    return velocity;
 }
 
 float Particle::getSpeed() const
