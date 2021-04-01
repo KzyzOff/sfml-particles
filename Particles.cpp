@@ -31,19 +31,16 @@ void ParticleCluster::draw(sf::RenderTarget &target, sf::RenderStates states ) c
 Particle::Particle( sf::RenderWindow &win, float speed, float angle_in_rad )
         : window(win),
         speed(speed),
-        angle(angle_in_rad)
+        angle(angle_in_rad),
+        state(ParticleStates::ALIVE)
 {
     updateVelocity();
 }
 
-void Particle::update( float elapsed_time )
+void Particle::updatePosition()
 {
-    shape.setPosition( {elapsed_time * velocity.x, elapsed_time * velocity.y} );
-}
-
-void Particle::draw( sf::RenderTarget &target, sf::RenderStates states ) const
-{
-    target.draw( shape );
+    position = {shape.getPosition().x + velocity.x,
+                shape.getPosition().y + velocity.y};
 }
 
 void Particle::updateVelocity()
@@ -56,10 +53,22 @@ void Particle::updateVelocity()
     velocity.y = ( fabsf(dir_y) > 0.00001f ) ? dir_y : 0.f;
 }
 
-void Particle::updatePosition( float elapsed_time )
+void Particle::updatePhysics()
 {
-    shape.setPosition( {shape.getPosition().x + velocity.x * elapsed_time,
-                        shape.getPosition().y + velocity.y * elapsed_time} );
+    updatePosition();
+    updateVelocity();
+}
+
+void Particle::updateShapePos( float time_factor )
+{
+    shape.setPosition( {position.x + velocity.x * time_factor,
+                        position.y + velocity.y * time_factor} );
+}
+
+void Particle::render( float time_factor )
+{
+    updateShapePos( time_factor );
+    window.draw( shape );
 }
 
 void Particle::setAngle( float d_angle )
@@ -79,7 +88,12 @@ void Particle::setRadius( float radius )
 
 void Particle::setPosition( sf::Vector2f pos )
 {
-    shape.setPosition( pos );
+    if ( pos.x > window.getSize().x || pos.x < 0 ||
+         pos.y > window.getSize().y || pos.y < 0)
+    {
+        return;
+    }
+    position = pos;
 }
 
 sf::Vector2f Particle::getPosition() const

@@ -8,24 +8,33 @@
 #include <vector>
 #include <cmath>
 
+enum class ParticleStates { ALIVE, DEAD };
 enum class States { NOT_ACTIVE, TRIGGERED, CLEARING };
 
-class Particle : public sf::Drawable
+class Particle
 {
 private:
     sf::RenderWindow &window;
 	sf::CircleShape shape;
+	sf::Vector2f position;
 	sf::Vector2f velocity;
 	float speed;
 	float angle;
+	ParticleStates state;
+
+    void updatePosition();
+    void updateVelocity();
+
+    // Extrapolates shape position between two updatePhysics() calls.
+    // The factor value is between 0 and 1.
+    void updateShapePos( float factor );
 
 public:
 	Particle( sf::RenderWindow &win, float speed, float angle_in_rad );
 
-	void update( float elapsed_time );
-	void draw( sf::RenderTarget &target, sf::RenderStates states ) const override;
-    void updateVelocity();
-    void updatePosition( float elapsed_time );
+	void updatePhysics();
+	// Draw shape on the window
+	void render( float factor );
 
     void setAngle( float d_angle );
     void setColor( sf::Color color );
