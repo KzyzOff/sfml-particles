@@ -15,7 +15,7 @@ void Particle::updateState()
     sf::Vector2f pos = shape.getPosition();
     sf::Vector2f win_size;
     if ( pos.x > win_size.x || pos.x < 0.f ||
-         pos.y > win_size.y || pos.y < 0.f)
+         pos.y > win_size.y || pos.y < 0.f )
     {
         state = ParticleStates::DEAD;
     }

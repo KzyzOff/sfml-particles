@@ -34,6 +34,7 @@ private:
 public:
 	Particle( sf::RenderWindow &win, float speed, float angle_in_rad );
 
+	// Update particle position and velocity
 	void updatePhysics();
 	// Draw shape on the window
 	void render( float factor );
