@@ -1,32 +1,5 @@
 
-#include "Particles.h"
-
-// ParticleCluster implementation
-
-ParticleCluster::ParticleCluster(sf::RenderWindow &win )
-		: window( win ),
-		current_state( States::NOT_ACTIVE ),
-		lifespan_time( sf::Time::Zero )
-{
-	particle_vec.clear();
-}
-
-void ParticleCluster::trigger(sf::Vector2f position )
-{
-
-}
-
-void ParticleCluster::update(float elapsed_time )
-{
-
-}
-
-void ParticleCluster::draw(sf::RenderTarget &target, sf::RenderStates states ) const
-{
-
-}
-
-// Particle implementation
+#include "Particle.h"
 
 Particle::Particle( sf::RenderWindow &win, float speed, float angle_in_rad )
         : window(win),
@@ -35,6 +8,18 @@ Particle::Particle( sf::RenderWindow &win, float speed, float angle_in_rad )
         state(ParticleStates::ALIVE)
 {
     updateVelocity();
+}
+
+void Particle::updateState()
+{
+    sf::Vector2f pos = shape.getPosition();
+    sf::Vector2f win_size;
+    if ( pos.x > win_size.x || pos.x < 0.f ||
+         pos.y > win_size.y || pos.y < 0.f)
+    {
+        state = ParticleStates::DEAD;
+    }
+
 }
 
 void Particle::updatePosition()
@@ -55,8 +40,8 @@ void Particle::updateVelocity()
 
 void Particle::updatePhysics()
 {
-    updatePosition();
     updateVelocity();
+    updatePosition();
 }
 
 void Particle::updateShapePos( float time_factor )
@@ -67,6 +52,8 @@ void Particle::updateShapePos( float time_factor )
 
 void Particle::render( float time_factor )
 {
+    if ( state == ParticleStates::DEAD )
+        return;
     updateShapePos( time_factor );
     window.draw( shape );
 }

@@ -1,10 +1,9 @@
 
 #include <iostream>
 #include <cmath>
-#include <chrono>
 #include <SFML/Graphics.hpp>
 
-#include "Particles.h"
+#include "particle/Particle.h"
 
 #define MS_PER_UPDATE 1.f/45.f
 

@@ -21,6 +21,6 @@ include_directories(part)
 
 add_executable(sfml_particles
         main.cpp
-        Particles.h Particles.cpp)
+        particle/Particle.h particle/Particle.cpp Cluster.cpp Cluster.h ParticleGenerator.cpp ParticleGenerator.h)
 
 target_link_libraries(sfml_particles sfml-graphics sfml-audio)
